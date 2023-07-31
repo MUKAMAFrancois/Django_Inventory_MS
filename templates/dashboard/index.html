@@ -1,0 +1,81 @@
+{% extends 'common/base.html'%}
+{%load static%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title%} HomePage -Inventory MS {% endblock%}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  </head>
+  <body>
+    {% block content%}
+
+    {% if user.is_authenticated and user.is_staff and user.is_superuser%}
+    {% include 'common/statistics.html'%}
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+      const ctx = document.getElementById('myChart');
+    
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [{% for order in my_orders %} '{{order.name_product.product_name}}', {%endfor%}],
+          datasets: [{
+            label: '# Orders',
+            data: [{% for order in my_orders %} {{order.qty_ordered}}, {%endfor%}],
+            backgroundColor:[
+            'rgba(255,100,23,2)',
+            'rgba(56,100,679,1)',
+            'rgba(255,300,12,3)',
+            'rgba(234,56,78,1)',
+            'rgba(134,567,8,1)',
+            'rgba(345,67,23,9)',
+            'rgba(500,255,255,1)',
+            'rgba(7,7,98,2)',
+            'rgba(67,67,671,9)',
+            'rgba(90,90,45,34)',
+            'rgba(234,5,455)',
+            'rgba(234,4,5,1)',
+
+
+            ],
+            borderColor:[
+            'rgba(255,100,23,2)',
+            'rgba(56,100,679,1)',
+            'rgba(255,300,12,3)',
+            'rgba(234,56,78,1)',
+            'rgba(134,567,8,1)',
+            'rgba(345,67,23,9)',
+            'rgba(500,255,255,1)',
+            'rgba(7,7,98,2)',
+            'rgba(67,67,671,9)',
+            'rgba(90,90,45,34)',
+            'rgba(234,5,455)',
+            'rgba(234,4,5,1)',
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    </script>
+
+    {%else%}
+    {% include 'dashboard/customers.html'%}
+    {%endif%}
+    {%endblock%}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>

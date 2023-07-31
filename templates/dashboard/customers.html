@@ -1,0 +1,48 @@
+
+
+{% load crispy_forms_tags %}
+<body  style="background-color: #c6c6c3;">
+    
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-3 my-5">
+                <h2>Make Request</h2>
+                <hr>
+                <a href="{% url 'make_request' user.pk%}" class="btn btn-success">Make request</a>
+            </div>
+            <div class="col-md-9">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <h3>Orders made by: {{user.username}}</h3>
+                        <hr>
+
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Time</th>
+                            <th>Qty</th>
+                            
+                        </tr>
+    
+                    </thead>
+                    <tbody>
+                        {%for order in  my_orders %}
+                        {% if order.client_name == user %}
+
+                        <tr>
+                            <td>{{order.name_product}}</td>
+                            <td>{{order.name_product.category}}</td>
+                            <td>{{order.time_of_order}}</td>
+                            <td>{{order.qty_ordered}}</td>
+                            
+                        </tr>
+                        {%endif%}
+                   
+                        {%endfor%}
+                    </tbody>
+                </table>
+    
+            </div>
+        </div>
+    </div>
+</body>
